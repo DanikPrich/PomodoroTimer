@@ -3,7 +3,7 @@
 
 The project on GitHub is a Pomodoro Timer built with React.js. It was created solely by me.
 
-A Pomodoro Timer is a productivity tool that helps users stay focused and manage their time efficiently. The technique involves breaking work sessions into 25-minute intervals, followed by 5-minute breaks. After completing four work sessions, a longer break of 15-20 minutes is taken.
+A Pomodoro Timer is a productivity tool that helps users stay focused and manage their time efficiently. The technique involves breaking work sessions into 25-minute intervals, followed by 5-minute breaks. After completing four work sessions, a longer break of 15 minutes is taken.
 
 The Pomodoro Timer project has the following features:
 
