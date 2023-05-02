@@ -20,7 +20,8 @@ function App() {
   const [seconds, setSeconds] = useState(1)
   const [timerInterval, setTimerInterval] = useState()
 
-  const [timerStarted, setTimerStarted] = useState(false)
+  const [timerRunning, setTimerRunning] = useState(false)
+  const [timerPaused, setTimerPaused] = useState(false)
 
   useEffect(() => {
     transformTimer(minutes, seconds)
@@ -68,11 +69,12 @@ function App() {
 
   const startTimer = () => {
     console.log('start')
-    setTimerStarted(true)
+    setTimerRunning(true)
+    setTimerPaused(false);
 
-    if (timerStarted) return
+    if (timerRunning) return
 
-    const interval =  setInterval( async () => {
+    const interval =  setInterval(() => {
       setSeconds(seconds => seconds - 1)
     } ,1000)
 
@@ -81,19 +83,36 @@ function App() {
   
   const stopTimer = () => {
     console.log('stop')
+
     clearInterval(timerInterval)
     setMinutes(timerTypes[timerType])
     setSeconds(0)
-    setTimerStarted(false);
+    setTimerRunning(false);
+    setTimerPaused(false);
+  }
+
+  const onPausePressed = () => {
+    console.log('pause')
+    clearInterval(timerInterval)
+    setTimerRunning(false);
+    setTimerPaused(true);
   }
 
   return (
     <div className="section">
       <div className="container">
         <div className="pomodoro">
-          <Header timerType={timerType} changeTimerType={changeTimerType}/>
-          <Timer timer={timer}/>
-          <Footer onStartPressed={startTimer} onResetPressed={stopTimer}/>
+          <Header 
+            timerType={timerType} 
+            changeTimerType={changeTimerType}/>
+          <Timer 
+            timer={timer}/>
+          <Footer 
+            onStartPressed={startTimer} 
+            onPausePressed={onPausePressed} 
+            onResetPressed={stopTimer} 
+            timerRunning={timerRunning} 
+            timerPaused={timerPaused}/>
         </div>
       </div>
     </div>
