@@ -20,6 +20,9 @@
       color: #ffffff;
       border: 1px solid black;
     }
+    &:active {
+      color: rgb(169, 169, 169);
+    }
 
     &_active {
       background-color: #000000;
@@ -28,5 +31,13 @@
     }
 
     
+  }
+}
+
+@media (max-width: 500px) {
+  .pomodoro {
+    &__btns {
+      flex-direction: column;
+    }
   }
 }

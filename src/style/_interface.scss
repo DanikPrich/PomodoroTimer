@@ -5,3 +5,9 @@ body {
 .section {
   padding-top: 100px;
 }
+
+@media (max-width: 500px) {
+  .section {
+    padding-top: 30px;
+  }
+}
