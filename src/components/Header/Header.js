@@ -1,15 +1,16 @@
 import './header.scss'
 
-const Header = () => {
+const Header = ({timerType, changeTimerType}) => {
+
   return (
     <div className="pomodoro__btns">
-      <button className="pomodoro__btn pomodoro__btn_active">
+      <button onClick={() => {changeTimerType('pomodoro')}} className={`pomodoro__btn ${timerType === 'pomodoro' ? 'pomodoro__btn_active' : ''}`}>
         pomodoro
       </button>
-      <button className="pomodoro__btn">
+      <button onClick={() => {changeTimerType('shortBreak')}} className={`pomodoro__btn ${timerType === 'shortBreak' ? 'pomodoro__btn_active' : ''}`}>
         short break
       </button>
-      <button className="pomodoro__btn">
+      <button onClick={() => {changeTimerType('longBreak')}} className={`pomodoro__btn ${timerType === 'longBreak' ? 'pomodoro__btn_active' : ''}`}>
         long break
       </button>
     </div>
