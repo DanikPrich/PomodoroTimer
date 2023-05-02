@@ -1,0 +1,21 @@
+.pomodoro {
+  &__footer {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__start {
+    padding: 5px 30px;
+    border-radius: 24px;
+  }
+
+  &__reset {
+    height: 40px;
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+      transform: scale(0.9);
+    }
+  }
+}

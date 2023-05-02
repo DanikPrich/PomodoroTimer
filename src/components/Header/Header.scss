@@ -1,0 +1,24 @@
+.pomodoro {
+  
+  &__btns {
+    display: flex;
+    gap: 15px;
+  }
+
+  &__btn {
+    padding: 5px 20px;
+    background-color: #fff;
+    font-size: 20px;
+    color: #000;
+    border: 1px solid black;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+      background-color: #000000;
+      color: #ffffff;
+      border: 1px solid black;
+    }
+  }
+}
