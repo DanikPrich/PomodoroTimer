@@ -7,11 +7,12 @@ import './app.scss';
 
 function App() {
 
-  // const timerTypes = {
-  //   pomodoro: 25,
-  //   shortBreak: 5,
-  //   longBreak: 15
-  // }
+  const timerTypes = {
+    pomodoro: 25,
+    shortBreak: 5,
+    longBreak: 15
+  }
+
   const [timerType, setTimerType] = useState()
 
   const [timer, setTimer] = useState('')
@@ -30,8 +31,6 @@ function App() {
   useEffect(() => {
     if(seconds === 0 && minutes === 0) {
       stopTimer()
-      setSeconds(0)
-      setMinutes(25)
     }
 
     if(seconds < 0) {
@@ -45,6 +44,11 @@ function App() {
 
   const changeTimerType = (type) => {
     setTimerType(type)
+
+    stopTimer()
+
+    setMinutes(timerTypes[type])
+    setSeconds(0)
   }
 
   const transformTimer = (min, sec) => {
@@ -73,6 +77,8 @@ function App() {
   const stopTimer = () => {
     console.log('stop')
     clearInterval(timerInterval)
+    setMinutes(timerTypes[timerType])
+    setSeconds(0)
     setTimerStarted(false);
   }
 
