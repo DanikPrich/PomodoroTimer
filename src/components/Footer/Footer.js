@@ -10,7 +10,7 @@ const Footer = ({onStartPressed, onPausePressed, onResetPressed, timerRunning, t
       <button onClick={onPausePressed} className={`pomodoro__btn ${timerPaused ? 'pomodoro__btn_active' : ''}`}>
         pause
       </button>
-      <img onClick={onResetPressed} className="pomodoro__reset" src={ resetImg } alt="reset button"></img>
+      <img onClick={onResetPressed} className="pomodoro__footer-img" src={ resetImg } alt="reset button"></img>
     </div>
   )
 }

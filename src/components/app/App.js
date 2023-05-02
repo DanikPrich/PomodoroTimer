@@ -93,9 +93,11 @@ function App() {
 
   const onPausePressed = () => {
     console.log('pause')
-    clearInterval(timerInterval)
-    setTimerRunning(false);
-    setTimerPaused(true);
+    if (timerRunning) {
+      clearInterval(timerInterval)
+      setTimerRunning(false);
+      setTimerPaused(true);
+    }
   }
 
   return (
