@@ -1,13 +1,13 @@
 import './footer.scss'
 import resetImg from '../../resources/img/reset.svg'
 
-const Footer = () => {
+const Footer = ({onStartPressed, onResetPressed}) => {
   return (
-    <div class="pomodoro__footer">
-      <button class="pomodoro__btn pomodoro__start">
+    <div className="pomodoro__footer">
+      <button onClick={onStartPressed} className="pomodoro__btn pomodoro__start">
         start
       </button>
-      <img class="pomodoro__reset" src={ resetImg } alt="reset button"></img>
+      <img onClick={onResetPressed} className="pomodoro__reset" src={ resetImg } alt="reset button"></img>
     </div>
   )
 }

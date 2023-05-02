@@ -1,15 +1,15 @@
-import './Header.scss'
+import './header.scss'
 
 const Header = () => {
   return (
-    <div class="pomodoro__btns">
-      <button class="pomodoro__btn">
+    <div className="pomodoro__btns">
+      <button className="pomodoro__btn pomodoro__btn_active">
         pomodoro
       </button>
-      <button class="pomodoro__btn">
+      <button className="pomodoro__btn">
         short break
       </button>
-      <button class="pomodoro__btn">
+      <button className="pomodoro__btn">
         long break
       </button>
     </div>
