@@ -7,13 +7,25 @@ import './app.scss';
 
 function App() {
 
-  const [timerTypes, setTimerTypes] = useState({
-    pomodoro: 25,
-    shortBreak: 5,
-    longBreak: 15
-  })
+  const [sessionTypes, setSessionTypes] = useState([
+    {
+      name: 'pomodoro',
+      minutes: 25,
+      seconds: 0,
+    },
+    {
+      name: 'shortBreak',
+      minutes: 5,
+      seconds: 0,
+    },
+    {
+      name: 'longBreak',
+      minutes: 15,
+      seconds: 0,
+    }
+  ])
 
-  const [timerType, setTimerType] = useState()
+  const [sessionType, setSessionType] = useState('pomodoro')
 
   const [timer, setTimer] = useState('')
 
@@ -27,21 +39,23 @@ function App() {
 
   useEffect(() => {
     transformTimer(minutes, seconds)
-    setTimerType('pomodoro')
+    setSessionType('pomodoro')
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    if(seconds === 0 && minutes === 0) {
-      if(timerType === 'pomodoro') {
-        setTimerType('shortBreak')
+    if (timerRunning) {
+      if(seconds === 0 && minutes === 0) {
+        if(sessionType === 'pomodoro') {
+          setSessionType('shortBreak')
+        }
+        stopTimer()
       }
-      stopTimer()
-    }
-
-    if(seconds < 0) {
-      setSeconds(59)
-      setMinutes(minutes => minutes - 1)
+  
+      if(seconds < 0) {
+        setSeconds(59)
+        setMinutes(minutes => minutes - 1)
+      }
     }
 
     transformTimer(minutes, seconds)
@@ -49,17 +63,20 @@ function App() {
   }, [minutes, seconds])
 
   useEffect(() => {
-    setMinutes(timerTypes[timerType])
-    setSeconds(0)
+    setTimerValuesBySessionType()
+    // setMinutes(sessionTypes.find(type => type.name === sessionType).minutes)
+    // setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
     // eslint-disable-next-line
-  }, [timerType])
+  }, [sessionType])
 
   useEffect(() => {
+    // console.log(sessionTypes)
+    setTimerValuesBySessionType()
     // eslint-disable-next-line
-  }, [timerTypes])
+  }, [sessionTypes])
 
-  const changeTimerType = (type) => {
-    setTimerType(type)
+  const changeSessionType = (type) => {
+    setSessionType(type)
     stopTimer()
   }
 
@@ -91,8 +108,9 @@ function App() {
     console.log('stop')
 
     clearInterval(timerInterval)
-    setMinutes(timerTypes[timerType])
-    setSeconds(0)
+    setTimerValuesBySessionType()
+    // setMinutes(sessionTypes.find(type => type.name === sessionType).minutes)
+    // setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
     setTimerRunning(false);
     setTimerPaused(false);
   }
@@ -106,20 +124,46 @@ function App() {
     }
   }
 
-  const onTimerIncrement = (val) => {
-    if (val === 'min') {
-      setMinutes(minutes => minutes + 1)
-    } else {
-      setSeconds(seconds => seconds + 1)
-    }
+  const setTimerValuesBySessionType = () => {
+    setMinutes(sessionTypes.find(type => type.name === sessionType).minutes)
+    setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
   }
 
-  const onTimerDecrement = (val) => {
-    if (val === 'min') {
-      setMinutes(minutes => minutes - 1)
-    } else {
-      setSeconds(seconds => seconds - 1)
-    }
+  const onTimerIncrement = (timerType) => {
+    setSessionTypes(sessionTypes => {
+      return sessionTypes.map((type) => {
+
+        const newValue = ((type[timerType] + 1) > 59) ? 0 : type[timerType] + 1
+
+        if(type.name === sessionType) {
+          return {
+            ...type,
+            [timerType]: newValue
+          }
+        } else {
+          return type
+        }
+      })
+    })
+
+  }
+
+  const onTimerDecrement = (timerType) => {
+    setSessionTypes(sessionTypes => {
+      return sessionTypes.map((type) => {
+        
+        const newValue = ((type[timerType] - 1) < 0) ? 59 : type[timerType] - 1
+
+        if(type.name === sessionType) {
+          return {
+            ...type,
+            [timerType]: newValue
+          }
+        } else {
+          return type
+        }
+      })
+    })
   }
   
 
@@ -128,8 +172,8 @@ function App() {
       <div className="container">
         <div className="pomodoro">
           <Header 
-            timerType={timerType} 
-            changeTimerType={changeTimerType}/>
+            sessionType={sessionType} 
+            changeSessionType={changeSessionType}/>
           <Timer 
             timer={timer}
             onTimerIncrement={onTimerIncrement}

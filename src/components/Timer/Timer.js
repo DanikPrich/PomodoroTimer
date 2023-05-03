@@ -12,7 +12,7 @@ const Timer = ({ timer, onTimerIncrement, onTimerDecrement, timerRunning, timerP
     }
   }, [timerRunning, timerPaused] )
   
-  
+
   const setArrowsEnabled = () => {
     if(!(timerRunning || timerPaused)) {
       setArrowsDisabled(false)
@@ -24,15 +24,15 @@ const Timer = ({ timer, onTimerIncrement, onTimerDecrement, timerRunning, timerP
     <>
       <div className="pomodoro__timer-wrap">
         <div className="arrows">
-          <img onClick={() => {onTimerIncrement('min')}} className="arrows__item arrows-up" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
-          <img onClick={() => {onTimerIncrement('sec')}} className="arrows__item arrows-up" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
+          <img onClick={() => {onTimerIncrement('minutes')}} className="arrows__item arrows-up" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
+          <img onClick={() => {onTimerIncrement('seconds')}} className="arrows__item arrows-up" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
         </div>
         <div onClick={setArrowsEnabled} className="pomodoro__timer">
           { timer }
         </div>
         <div className="arrows">
-          <img onClick={() => {onTimerDecrement('min')}} className="arrows__item arrows-down" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
-          <img onClick={() => {onTimerDecrement('sec')}} className="arrows__item arrows-down" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
+          <img onClick={() => {onTimerDecrement('minutes')}} className="arrows__item arrows-down" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
+          <img onClick={() => {onTimerDecrement('seconds')}} className="arrows__item arrows-down" style={disabledArrowsStyle} src={arrowImg} alt="arrow"/>
         </div>
       </div>
     </>
