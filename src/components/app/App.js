@@ -6,10 +6,13 @@ import Footer from '../Footer/Footer';
 
 import useDocumentTitle from '../../hooks/title.hook';
 
+import alarm1 from '../../assets/alarm1.mp3'
+import alarm2 from '../../assets/alarm2.mp3'
+import alarm3 from '../../assets/alarm3.mp3'
+
 import './app.scss';
 
 function App() {
-  console.log('update')
   const [sessionTypes, setSessionTypes] = useState([
     {
       name: 'pomodoro',
@@ -52,11 +55,22 @@ function App() {
 
     if (timerRunning) {
       if(seconds === 0 && minutes === 0) {
-        if(sessionType === 'pomodoro') {
-          setSessionType('shortBreak')
-        }
-        if(sessionType === 'shortBreak' || sessionType === 'longBreak') {
-          setSessionType('pomodoro')
+
+        switch(sessionType) {
+          
+          case 'shortBreak': 
+            playAlarm(alarm1)
+            setSessionType('pomodoro')
+            break;
+          
+          case 'longBreak': 
+            playAlarm(alarm3)
+            setSessionType('pomodoro')
+            break;
+          
+          default: 
+            playAlarm(alarm2)
+            setSessionType('shortBreak')
         }
         stopTimer()
       }
@@ -154,7 +168,11 @@ function App() {
       })
     })
   }
-  
+
+  const playAlarm = (alarm) => {
+    new Audio(alarm).play()
+  }
+
 
   return (
     <div className="section">
