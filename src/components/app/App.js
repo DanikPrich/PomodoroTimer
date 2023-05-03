@@ -49,6 +49,9 @@ function App() {
         if(sessionType === 'pomodoro') {
           setSessionType('shortBreak')
         }
+        if(sessionType === 'shortBreak' || sessionType === 'longBreak') {
+          setSessionType('pomodoro')
+        }
         stopTimer()
       }
   
@@ -64,8 +67,6 @@ function App() {
 
   useEffect(() => {
     setTimerValuesBySessionType()
-    // setMinutes(sessionTypes.find(type => type.name === sessionType).minutes)
-    // setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
     // eslint-disable-next-line
   }, [sessionType])
 
@@ -109,8 +110,6 @@ function App() {
 
     clearInterval(timerInterval)
     setTimerValuesBySessionType()
-    // setMinutes(sessionTypes.find(type => type.name === sessionType).minutes)
-    // setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
     setTimerRunning(false);
     setTimerPaused(false);
   }
@@ -129,30 +128,13 @@ function App() {
     setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
   }
 
-  const onTimerIncrement = (timerType) => {
+  const onTimerChange = (timerType, operationType) => {
     setSessionTypes(sessionTypes => {
       return sessionTypes.map((type) => {
 
-        const newValue = ((type[timerType] + 1) > 59) ? 0 : type[timerType] + 1
-
-        if(type.name === sessionType) {
-          return {
-            ...type,
-            [timerType]: newValue
-          }
-        } else {
-          return type
-        }
-      })
-    })
-
-  }
-
-  const onTimerDecrement = (timerType) => {
-    setSessionTypes(sessionTypes => {
-      return sessionTypes.map((type) => {
-        
-        const newValue = ((type[timerType] - 1) < 0) ? 59 : type[timerType] - 1
+        const newValue = operationType < 0 
+          ? ((type[timerType] - 1) < 0) ? 59 : type[timerType] - 1
+          : ((type[timerType] + 1) > 59) ? 0 : type[timerType] + 1
 
         if(type.name === sessionType) {
           return {
@@ -176,8 +158,7 @@ function App() {
             changeSessionType={changeSessionType}/>
           <Timer 
             timer={timer}
-            onTimerIncrement={onTimerIncrement}
-            onTimerDecrement={onTimerDecrement}
+            onTimerChange={onTimerChange}
             timerRunning={timerRunning} 
             timerPaused={timerPaused}/>
           <Footer 
