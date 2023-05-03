@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+
 import Header from '../Header/Header';
 import Timer from '../Timer/Timer';
 import Footer from '../Footer/Footer';
 
+import useDocumentTitle from '../../hooks/title.hook';
+
 import './app.scss';
 
 function App() {
-
+  console.log('update')
   const [sessionTypes, setSessionTypes] = useState([
     {
       name: 'pomodoro',
@@ -37,6 +40,8 @@ function App() {
   const [timerRunning, setTimerRunning] = useState(false)
   const [timerPaused, setTimerPaused] = useState(false)
 
+  useDocumentTitle(timer)
+
   useEffect(() => {
     transformTimer(minutes, seconds)
     setSessionType('pomodoro')
@@ -44,6 +49,7 @@ function App() {
   }, [])
 
   useEffect(() => {
+
     if (timerRunning) {
       if(seconds === 0 && minutes === 0) {
         if(sessionType === 'pomodoro') {
@@ -62,19 +68,14 @@ function App() {
     }
 
     transformTimer(minutes, seconds)
+    
     // eslint-disable-next-line
   }, [minutes, seconds])
 
   useEffect(() => {
     setTimerValuesBySessionType()
     // eslint-disable-next-line
-  }, [sessionType])
-
-  useEffect(() => {
-    // console.log(sessionTypes)
-    setTimerValuesBySessionType()
-    // eslint-disable-next-line
-  }, [sessionTypes])
+  }, [sessionType, sessionTypes])
 
   const changeSessionType = (type) => {
     setSessionType(type)
@@ -92,13 +93,19 @@ function App() {
   }
 
   const startTimer = () => {
-    console.log('start')
-    setTimerRunning(true)
+    console.log('start');
+    setTimerRunning(true);
     setTimerPaused(false);
 
     if (timerRunning) return
 
+    if (minutes === 0 && seconds === 0) {
+      stopTimer()
+      return
+    }
+
     const interval =  setInterval(() => {
+      
       setSeconds(seconds => seconds - 1)
     } ,1000)
 
