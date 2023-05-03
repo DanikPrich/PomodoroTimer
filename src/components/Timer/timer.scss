@@ -3,3 +3,16 @@
     font-size: 100px;
   }
 }
+
+.arrows {
+  display: flex;
+  height: 30px;
+  justify-content: space-around;
+  &__item {
+    cursor: pointer;
+    transition: opacity .3s linear;
+  }
+  &-down {
+    transform: rotate(180deg);
+  }
+}

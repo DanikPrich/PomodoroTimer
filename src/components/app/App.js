@@ -7,17 +7,19 @@ import './app.scss';
 
 function App() {
 
-  const timerTypes = {
+  const [timerTypes, setTimerTypes] = useState({
     pomodoro: 25,
     shortBreak: 5,
     longBreak: 15
-  }
+  })
 
   const [timerType, setTimerType] = useState()
 
   const [timer, setTimer] = useState('')
+
   const [minutes, setMinutes] = useState(0)
   const [seconds, setSeconds] = useState(1)
+
   const [timerInterval, setTimerInterval] = useState()
 
   const [timerRunning, setTimerRunning] = useState(false)
@@ -51,6 +53,10 @@ function App() {
     setSeconds(0)
     // eslint-disable-next-line
   }, [timerType])
+
+  useEffect(() => {
+    // eslint-disable-next-line
+  }, [timerTypes])
 
   const changeTimerType = (type) => {
     setTimerType(type)
@@ -100,6 +106,23 @@ function App() {
     }
   }
 
+  const onTimerIncrement = (val) => {
+    if (val === 'min') {
+      setMinutes(minutes => minutes + 1)
+    } else {
+      setSeconds(seconds => seconds + 1)
+    }
+  }
+
+  const onTimerDecrement = (val) => {
+    if (val === 'min') {
+      setMinutes(minutes => minutes - 1)
+    } else {
+      setSeconds(seconds => seconds - 1)
+    }
+  }
+  
+
   return (
     <div className="section">
       <div className="container">
@@ -108,7 +131,11 @@ function App() {
             timerType={timerType} 
             changeTimerType={changeTimerType}/>
           <Timer 
-            timer={timer}/>
+            timer={timer}
+            onTimerIncrement={onTimerIncrement}
+            onTimerDecrement={onTimerDecrement}
+            timerRunning={timerRunning} 
+            timerPaused={timerPaused}/>
           <Footer 
             onStartPressed={startTimer} 
             onPausePressed={onPausePressed} 
