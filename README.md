@@ -16,5 +16,7 @@ The Pomodoro Timer project has the following features:
 4. Audio notification: A sound is played when the timer reaches zero to alert users of the end of a session. (Not working for mobile devices)
 
 5. Keys controll: "Space" to start or pause timer. "Esc" to stop timer.
+
+6. Dynamic web title displays the remaining time.
   
 The project has a minimalist design, with a simple and intuitive interface that allows users to focus on their work without distractions. Overall, the Pomodoro Timer project is a helpful tool for anyone looking to manage their time more effectively and increase productivity.
