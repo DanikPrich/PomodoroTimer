@@ -91,6 +91,8 @@ function App() {
   }, [actualSessionType, sessionTypes])
 
   const changeSessionType = (type) => {
+    if(type === actualSessionType) return
+    
     setSessionType(type)
     stopTimer()
   }
