@@ -14,3 +14,13 @@
   }
   
 }
+
+@media (max-width: 400px) {
+  .pomodoro {
+    &__footer {
+      &-img {
+        height: 20px;
+      }
+    }
+  }
+}

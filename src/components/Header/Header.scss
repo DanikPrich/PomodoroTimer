@@ -33,11 +33,24 @@
     
   }
 }
-
 @media (max-width: 500px) {
   .pomodoro {
     &__btns {
-      flex-direction: column;
+      gap: 10px
+    }
+    &__btn {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .pomodoro {
+    &__btns {
+      gap: 5px
+    }
+    &__btn {
+      font-size: 10px;
     }
   }
 }
