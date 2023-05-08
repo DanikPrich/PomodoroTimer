@@ -36,7 +36,7 @@ function App() {
   const [timer, setTimer] = useState('')
 
   const [minutes, setMinutes] = useState(0)
-  const [seconds, setSeconds] = useState(1)
+  const [seconds, setSeconds] = useState(0)
 
   const [timerInterval, setTimerInterval] = useState()
 
@@ -108,7 +108,6 @@ function App() {
   }
 
   const startTimer = () => {
-    console.log('start');
     setTimerRunning(true);
     setTimerPaused(false);
 
@@ -119,17 +118,26 @@ function App() {
       return
     }
 
+    let startedTime = new Date().getTime()
+    let startedSec = seconds
+
     const interval =  setInterval(() => {
+      const currentTime = new Date().getTime();
+      const elapsedTime = Math.floor((currentTime - startedTime) / 1000);
+      const currentSec = startedSec - elapsedTime;
       
-      setSeconds(seconds => seconds - 1)
-    } ,1000)
+      if (currentSec < 0) {
+        startedTime = new Date().getTime();
+        startedSec = 59;
+      }
+
+      setSeconds(currentSec)
+    } ,100)
 
     setTimerInterval(interval)
   }
   
   const stopTimer = () => {
-    console.log('stop')
-
     clearInterval(timerInterval)
     setTimerValuesBySessionType()
     setTimerRunning(false);
@@ -137,7 +145,6 @@ function App() {
   }
 
   const onPausePressed = () => {
-    console.log('pause')
     if (timerRunning) {
       clearInterval(timerInterval)
       setTimerRunning(false);
