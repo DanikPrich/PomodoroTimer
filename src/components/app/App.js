@@ -31,12 +31,12 @@ function App() {
     }
   ])
 
-  const [sessionType, setSessionType] = useState('pomodoro')
+  const [actualSessionType, setSessionType] = useState('pomodoro')
 
   const [timer, setTimer] = useState('')
 
   const [minutes, setMinutes] = useState(0)
-  const [seconds, setSeconds] = useState(1)
+  const [seconds, setSeconds] = useState(0)
 
   const [timerInterval, setTimerInterval] = useState()
 
@@ -47,7 +47,7 @@ function App() {
 
   useEffect(() => {
     transformTimer(minutes, seconds)
-    setSessionType('pomodoro')
+    // setSessionType('pomodoro')
     // eslint-disable-next-line
   }, [])
 
@@ -56,7 +56,7 @@ function App() {
     if (timerRunning) {
       if(seconds === 0 && minutes === 0) {
 
-        switch(sessionType) {
+        switch(actualSessionType) {
           
           case 'shortBreak': 
             playAlarm(alarm1)
@@ -80,7 +80,6 @@ function App() {
         setMinutes(minutes => minutes - 1)
       }
     }
-
     transformTimer(minutes, seconds)
     
     // eslint-disable-next-line
@@ -89,9 +88,11 @@ function App() {
   useEffect(() => {
     setTimerValuesBySessionType()
     // eslint-disable-next-line
-  }, [sessionType, sessionTypes])
+  }, [actualSessionType, sessionTypes])
 
   const changeSessionType = (type) => {
+    if(type === actualSessionType) return
+    
     setSessionType(type)
     stopTimer()
   }
@@ -107,7 +108,6 @@ function App() {
   }
 
   const startTimer = () => {
-    console.log('start');
     setTimerRunning(true);
     setTimerPaused(false);
 
@@ -118,17 +118,26 @@ function App() {
       return
     }
 
+    let startedTime = new Date().getTime()
+    let startedSec = seconds
+
     const interval =  setInterval(() => {
+      const currentTime = new Date().getTime();
+      const elapsedTime = Math.floor((currentTime - startedTime) / 1000);
+      const currentSec = startedSec - elapsedTime;
       
-      setSeconds(seconds => seconds - 1)
-    } ,1000)
+      if (currentSec < 0) {
+        startedTime = new Date().getTime();
+        startedSec = 59;
+      }
+
+      setSeconds(currentSec)
+    } ,100)
 
     setTimerInterval(interval)
   }
   
   const stopTimer = () => {
-    console.log('stop')
-
     clearInterval(timerInterval)
     setTimerValuesBySessionType()
     setTimerRunning(false);
@@ -136,7 +145,6 @@ function App() {
   }
 
   const onPausePressed = () => {
-    console.log('pause')
     if (timerRunning) {
       clearInterval(timerInterval)
       setTimerRunning(false);
@@ -145,8 +153,8 @@ function App() {
   }
 
   const setTimerValuesBySessionType = () => {
-    setMinutes(sessionTypes.find(type => type.name === sessionType).minutes)
-    setSeconds(sessionTypes.find(type => type.name === sessionType).seconds)
+    setMinutes(sessionTypes.find(type => type.name === actualSessionType).minutes)
+    setSeconds(sessionTypes.find(type => type.name === actualSessionType).seconds)
   }
 
   const onTimerChange = (timerType, operationType) => {
@@ -157,7 +165,7 @@ function App() {
           ? ((type[timerType] - 1) < 0) ? 59 : type[timerType] - 1
           : ((type[timerType] + 1) > 59) ? 0 : type[timerType] + 1
 
-        if(type.name === sessionType) {
+        if(type.name === actualSessionType) {
           return {
             ...type,
             [timerType]: newValue
@@ -173,13 +181,28 @@ function App() {
     new Audio(alarm).play()
   }
 
+  const keyDown = (e) => {
+    if(e.code === "Space") {
+      if(timerRunning) {
+        onPausePressed();
+      } else {
+        startTimer();
+      }
+    }
+    if(e.code === "Escape") {
+      stopTimer();
+    }
+  }
+
 
   return (
-    <div className="section">
+    <div className="section"
+      onKeyDown={(e) => keyDown(e)}
+      tabIndex="0">
       <div className="container">
         <div className="pomodoro">
           <Header 
-            sessionType={sessionType} 
+            actualSessionType={actualSessionType} 
             changeSessionType={changeSessionType}/>
           <Timer 
             timer={timer}

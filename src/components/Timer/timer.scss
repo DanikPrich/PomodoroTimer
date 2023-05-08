@@ -17,3 +17,26 @@
     transform: rotate(180deg);
   }
 }
+@media (max-width: 500px) {
+  .pomodoro {
+    &__timer {
+      font-size: 80px;
+    }
+  }
+
+  .arrows {
+    height: 25px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pomodoro {
+    &__timer {
+      font-size: 60px;
+    }
+  }
+
+  .arrows {
+    height: 20px;
+  }
+}
